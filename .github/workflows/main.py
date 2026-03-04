@@ -1,21 +1,24 @@
 name: Auto Trigger Semaphore
 on:
   schedule:
-    - cron: '*/30 * * * *' # Berjalan otomatis setiap 30 menit
-  workflow_dispatch:      # Memungkinkan Anda klik tombol "Run" secara manual
+    - cron: '*/30 * * * *'
+  workflow_dispatch:
 
 jobs:
   push_to_trigger:
     runs-on: ubuntu-latest
     permissions:
-      contents: write     # Izin wajib untuk melakukan push
+      contents: write
     steps:
-      - name: Checkout code
+      - name: Checkout Specific Branch
         uses: actions/checkout@v4
+        with:
+          ref: set-up-semaphore # <--- WAJIB TAMBAHKAN INI
 
       - name: Create Empty Commit
         run: |
           git config --global user.name "github-actions[bot]"
           git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git commit --allow-empty -m "Trigger Semaphore: $(date)"
-          git push
+          # Membuat perubahan kecil pada file atau commit kosong
+          git commit --allow-empty -m "Trigger Semaphore on set-up-branch: $(date)"
+          git push origin set-up-semaphore # <--- PASTIKAN PUSH KE BRANCH YG BENAR
