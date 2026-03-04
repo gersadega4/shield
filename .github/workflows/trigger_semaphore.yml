@@ -1,0 +1,23 @@
+name: Auto Trigger Semaphore (Branch Specific)
+on:
+  schedule:
+    - cron: '*/30 * * * *' # Menjalankan pemicu setiap 30 menit
+  workflow_dispatch:      # Tombol manual untuk testing
+
+jobs:
+  retrigger:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout Target Branch
+        uses: actions/checkout@v4
+        with:
+          ref: set-up-semaphore # <--- Mengunci target ke branch yang benar
+
+      - name: Push Empty Change
+        run: |
+          git config --global user.name "GitHub Action Bot"
+          git config --global user.email "bot@github.com"
+          git commit --allow-empty -m "Otomatis Restart Semaphore: $(date)"
+          git push origin set-up-semaphore
